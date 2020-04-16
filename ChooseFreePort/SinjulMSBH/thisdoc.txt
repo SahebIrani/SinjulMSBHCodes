@@ -1,0 +1,11 @@
+﻿https://andrewlock.net/how-to-automatically-choose-a-free-port-in-asp-net-core/
+
+
+You can achieve exactly this by using the special port 0 when setting the URL to use. For example, to bind to a random http and https port on the loopback (localhost) address, run your application using the following command:
+dotnet run --urls "http://[::1]:0;https://[::1]:0"
+
+
+Alternatively, instead of binding to the loopback address, you can bind to any IP address (using a random port) with the following command:
+dotnet run --urls "http://*:0"
+
+

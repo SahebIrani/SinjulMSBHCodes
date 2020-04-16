@@ -8,3 +8,13 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+
+<div class="text-center mt-4">
+    <ul class="list-group">
+        @foreach (string address in Model.Addresses)
+        {
+            <li class="list-group-item">@address</li>
+        }
+    </ul>
+</div>
