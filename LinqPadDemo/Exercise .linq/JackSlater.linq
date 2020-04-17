@@ -1,13 +1,13 @@
 <Query Kind="Expression">
   <Connection>
-    <ID>593e4eba-044a-4c0f-bdbe-7a5a090e0ff6</ID>
+    <ID>df24f7fb-cc92-4f72-8f39-d6b8350e03f3</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
-    <Persist>true</Persist>
     <Driver Assembly="(internal)" PublicKeyToken="no-strong-name">LINQPad.Drivers.EFCore.DynamicDriver</Driver>
     <Server>SINJULMSBH\MSSQLSERVERS2019</Server>
     <Database>LinqPadDemoDB</Database>
-    <AlphabetizeColumns>true</AlphabetizeColumns>
     <ConvertUnderscoresToPascal>true</ConvertUnderscoresToPascal>
+    <AlphabetizeColumns>true</AlphabetizeColumns>
+    <Persist>true</Persist>
     <DisplayName>LinqPadDemoDB</DisplayName>
     <DriverData>
       <EFProvider>Microsoft.EntityFrameworkCore.SqlServer</EFProvider>
@@ -15,8 +15,8 @@
   </Connection>
 </Query>
 
-from j in JackSlaters
-where j.Id > 310
+from j in JackSlaters.AsNoTracking()
+where j.Id > 310 && j.Age > 4 && j.Age < 22
 orderby j.Id descending
 select new
 {
