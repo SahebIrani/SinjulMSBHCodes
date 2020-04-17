@@ -1,0 +1,14 @@
+﻿https://stackoverflow.com/questions/57149186/linqpad-6-core-and-net-core-api
+
+https://user-images.githubusercontent.com/6011991/64848985-b53dea80-d612-11e9-9ea9-d85840ebe4af.png
+https://user-images.githubusercontent.com/6011991/64907554-5d77b000-d6f4-11e9-9684-50ea678647eb.png
+
+https://i.stack.imgur.com/lwRyU.png
+
+https://github.com/dotnet/BenchmarkDotNet/pull/1245
+https://github.com/dotnet/BenchmarkDotNet/issues/1241
+
+https://youtube.com/watch?v=l1VDKM9tXSs&feature=youtu.be
+
+https://www.linqpad.net/
+https://www.linqpad.net/EntityFramework.aspx
