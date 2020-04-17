@@ -12,3 +12,12 @@ https://youtube.com/watch?v=l1VDKM9tXSs&feature=youtu.be
 
 https://www.linqpad.net/
 https://www.linqpad.net/EntityFramework.aspx
+
+
+https://www.davepaquette.com/archive/2015/11/15/realistic-sample-data-with-genfu.aspx
+http://jameschambers.com/about/genfu.html
+http://taswar.zeytinsoft.com/generating-data-in-dotnet-core-with-genfu/
+
+
+
+
