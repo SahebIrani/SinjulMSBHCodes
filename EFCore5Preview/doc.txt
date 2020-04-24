@@ -52,10 +52,9 @@ dotnet tool uninstall --global dotnet-ef
 dotnet tool install --global dotnet-ef --version 5.0.0-preview.3.20181.2
 What’s new in EF Core 5 Preview 3
 Filtered Include
-New ModelBuilder API for navigation properties
-New command-line parameters for namespaces and connection strings
-EnableDetailedErrors has returned
-Cosmos partition keys
+New ModelBuilder API for navigation propertiesپارامترهای جدید خط فرمان برای مکان های نام و رشته های اتصال
+EnableDetailedErrors برگشته است
+کلیدهای پارتیشن کیهان
 Support for the SQL Server DATALENGTH function
 
 

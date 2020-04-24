@@ -70,7 +70,7 @@ namespace EFCore5Preview.Data
 
 
             //? New ModelBuilder API for navigation properties
-            //# modelBuilder.Entity<Shop>().Navigation(_ => _.Customers).HasField("_mainTitle");
+            // modelBuilder.Entity<Shop>().Navigation(_ => _.Customers).HasField("_mainTitle");
         }
     }
 
@@ -107,6 +107,9 @@ namespace EFCore5Preview.Data
 
     public class Shop
     {
+        public int ShopId { get; set; }
+
+
         //? Use a C# attribute to specify a property backing field
         private string _mainTitle;
 
@@ -116,8 +119,6 @@ namespace EFCore5Preview.Data
             get => _mainTitle;
             set => _mainTitle = value;
         }
-
-        public int ShopId { get; set; }
 
         public virtual ICollection<Customer> Customers { get; set; }
     }
