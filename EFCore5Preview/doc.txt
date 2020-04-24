@@ -35,14 +35,28 @@ Use a custom filter over event and level:
 Example: .LogTo(Console.WriteLine, (id, level) => id == RelationalEventId.CommandExecuting)
 
 
+https://devblogs.microsoft.com/dotnet/announcing-entity-framework-core-5-0-preview-2/
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 5.0.0-preview.2.20159.4
+dotnet tool uninstall --global dotnet-ef
+dotnet tool install --global dotnet-ef --version 5.0.0-preview.2.20159.4
+Use a C# attribute to specify a property backing field
+Complete discriminator mapping
+Performance improvements in Microsoft.Data.Sqlite
 
 
-
-
-
-
-
-
+https://devblogs.microsoft.com/dotnet/announcing-entity-framework-core-5-0-preview-3/
+How to get EF Core 5.0 previews
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 5.0.0-preview.3.20181.2
+Installing dotnet ef
+dotnet tool uninstall --global dotnet-ef
+dotnet tool install --global dotnet-ef --version 5.0.0-preview.3.20181.2
+What’s new in EF Core 5 Preview 3
+Filtered Include
+New ModelBuilder API for navigation properties
+New command-line parameters for namespaces and connection strings
+EnableDetailedErrors has returned
+Cosmos partition keys
+Support for the SQL Server DATALENGTH function
 
 
 
