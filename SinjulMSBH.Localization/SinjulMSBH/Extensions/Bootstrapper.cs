@@ -17,6 +17,10 @@ namespace SinjulMSBH.Localization.SinjulMSBH.Extensions
                 .AddLocalization() // Default Path Resources .. !!!!   // SingleResxFile
                 //.AddLocalization(_ => _.ResourcesPath = "Resources") // SingleResxFile
                 //.AddLocalization(_ => _.ResourcesPath = "SinjulMSBH/Resources")
+                //.AddDataAnnotationsLocalization(options => {
+                //    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                //        factory.Create(typeof(SharedResource));
+                //})
                 .Configure<RequestLocalizationOptions>(
                     _ =>
                     {
