@@ -1,4 +1,4 @@
-﻿@model string
+﻿@*@model string*@
 
 @{
     ViewData["Title"] = "Home Page";
@@ -10,4 +10,62 @@
 </div>
 
 
-<p class="py-4 text-center text-info">@Model</p> 
+@*<p class="py-4 text-center text-info">@Model</p>*@
+
+
+
+
+
+
+
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SampleResources> HtmlLocalizer
+
+@Localizer.GetStrin(() => SampleResources.SomeCommonText)
+@HtmlLocalizer.GetString(r => r.PageHeader)
+
+@inject LocalizationProvider Provider
+@Provider.GetString(() => default)
+
+@Html.GetTranslations(typeof(SampleResources))
+
+@model UserViewModel
+
+@Html.DescriptionFor(m => m.UserName)
+@Html.TranslateFor(m => m.UserName)
+@Html.Translate(() => SampleResource.SomeStaticProperty)
+
+<form asp-controller="Home" asp-action="Index" method="post">
+    <div>
+        <label asp-for="UserName"></label>
+        <input asp-for="UserName"/>
+        <span asp-validation-for="UserName"></span>
+    </div>
+    <div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password"/>
+        <span asp-validation-for="Password"></span>
+    </div>
+    <button type="submit">Submit</button>
+</form>
+
+
+@inject IHtmlLocalizer<SampleResources> Localizer
+Localizer.WithCulture(new CultureInfo("no"))
+         .GetString(() => SampleResources.SomeCommonText)
+
+Localizer.GetStringByCulture(() => SampleResources.SomeCommonText, new Culture("no"))
+
+
+@Html.GetTranslations(typeof(SampleResources))
+
+<script>
+    document.getElementById('...').innerHTML =
+        window.jsl10n.MyProject.SampleResources.PageHeader;
+</script>
+
+@(Html.GetTranslations(() => SampleResources.PageHeader))
+
+@Html.GetTranslations(typeof(SampleResources), "no", "norwegianScope")
+
+var headerInNorwegian = window.norwegianScope.MyProject.SampleResources.PageHeader;

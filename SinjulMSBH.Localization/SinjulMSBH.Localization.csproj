@@ -7,17 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Views\Home\Index.cshtml" />
-    <None Include="Views\Home\Privacy.cshtml" />
-    <None Include="Views\Shared\Error.cshtml" />
-    <None Include="Views\Shared\_Layout.cshtml" />
-    <None Include="Views\Shared\_LoginPartial.cshtml" />
-    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
-    <None Include="Views\_ViewImports.cshtml" />
-    <None Include="Views\_ViewStart.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="LocalizationProvider.AdminUI.AspNetCore" Version="6.0.3" />
+    <PackageReference Include="LocalizationProvider.AspNetCore" Version="6.0.3" />
+    <PackageReference Include="LocalizationProvider.Storage.SqlServer" Version="6.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.0-preview.2.20167.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.0-preview.2.20167.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.0-preview.2.20167.3" />

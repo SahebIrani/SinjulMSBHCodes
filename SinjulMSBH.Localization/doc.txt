@@ -4,3 +4,7 @@ https://www.soluling.com/Help/ASP.NETCore/Index.htm
 
 https://www.soluling.com/Help/AspNetCoreFrame.htm
 
+
+
+
+https://github.com/valdisiljuconoks/LocalizationProvider

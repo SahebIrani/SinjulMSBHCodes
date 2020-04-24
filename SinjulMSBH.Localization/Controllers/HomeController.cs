@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
+using SinjulMSBH.Localization.SinjulMSBH.Resources;
+
 namespace SinjulMSBH.Localization.Controllers
 {
     [ApiController, Route("{culture:culture}/[controller]")]
@@ -10,21 +12,27 @@ namespace SinjulMSBH.Localization.Controllers
     {
         public HomeController(
             ILogger<HomeController> logger,
-            IStringLocalizer<HomeController> localizer)
+            IStringLocalizer<HomeController> localizer,
+            IStringLocalizer<SampleResources> stringLocalizer)
         {
             _logger = logger;
             Localizer = localizer;
+            StringLocalizer = stringLocalizer;
         }
 
         private readonly ILogger<HomeController> _logger;
 
         public IStringLocalizer<HomeController> Localizer { get; }
+        public IStringLocalizer<SampleResources> StringLocalizer { get; }
 
         public ActionResult<string> Get()
         {
             string result = Localizer["Home"];
 
             _logger.LogInformation(result);
+
+            LocalizedString smth =
+                Localizer.GetString(nameof(SampleResources.PageHeader));
 
             return result;
         }
