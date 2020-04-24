@@ -59,4 +59,9 @@ Cosmos partition keys
 Support for the SQL Server DATALENGTH function
 
 
+dotnet ef dbcontext scaffold "connection string" Microsoft.EntityFrameworkCore.SqlServer --context-namespace "My.Context" --namespace "My.Model"
+
+dotnet ef database update --connection "connection string"
+dotnet ef database update --connection "Server=SINJULMSBH\MSSQLSERVERS2019;Database=EFCorePreviewDB;Trusted_Connection=True;MultipleActiveResultSets=true"
+
 

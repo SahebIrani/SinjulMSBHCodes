@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -121,17 +123,63 @@ namespace EFCore5Preview.Controllers
 
         #region Preview2
 
+        [HttpGet(nameof(EFCore5Preview2))]
+        public async ValueTask<OkObjectResult> EFCore5Preview2(CancellationToken ct = default)
+        {
+            //? PropertyBackingField
 
+            string[] listOfTiltle =
+                await ApplicationDbContext.Customers.AsNoTracking().Select(_ => _.Title).ToArrayAsync(ct);
+
+            string[] listOfShop =
+                await ApplicationDbContext.Shop.AsNoTracking().Select(_ => _.Title).ToArrayAsync(ct);
+
+            return Ok(new { listOfTiltle, listOfShop });
+        }
 
         #endregion
 
 
         #region Preview3
 
+        [HttpGet(nameof(EFCore5Preview3))]
+        public async ValueTask<JsonResult> EFCore5Preview3(CancellationToken ct = default)
+        {
+            //? Filtered Include ..
+            IReadOnlyCollection<Shop> shop =
+                await ApplicationDbContext.Shop.AsNoTracking()
+                     .Include(_ => _.Customers.Where(p => p.Title.Contains("BackingField")))
+                     .ToListAsync(ct)
+            ;
 
+            //? Filtered Include with Skip and Take ..
+            IReadOnlyCollection<Shop> shops =
+                await ApplicationDbContext.Shop.AsNoTracking()
+                    .Include(_ =>
+                        _.Customers.OrderByDescending(post => post.Title)
+                        .Skip(0)
+                        .Take(4)
+                    )
+                    .ToListAsync(ct)
+            ;
+
+            //? Support for the SQL Server DATALENGTH function ..
+            int count = await ApplicationDbContext.Customers.AsNoTracking()
+                .CountAsync(_ => 44 < EF.Functions.DataLength(_.OrderDate), ct)
+            ;
+
+            JsonSerializerOptions options = new JsonSerializerOptions
+            {
+                ReferenceHandling = ReferenceHandling.Preserve
+            };
+
+            string res1 = JsonSerializer.Serialize(shop, options);
+            string res2 = JsonSerializer.Serialize(shops, options);
+
+            return Json(new { shop, shops, count }, options);
+        }
 
         #endregion
-
 
 
         public IActionResult Index() => View();

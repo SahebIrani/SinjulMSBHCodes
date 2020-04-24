@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace EFCore5Preview.Data
                 new DbContextOptionsBuilder<ApplicationDbContext>();
 
             optionsBuilder
-                .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DotNetCore5DemoDb;Trusted_Connection=True;MultipleActiveResultSets=true")
+                .UseSqlServer("Server=SINJULMSBH\\MSSQLSERVERS2019;Database=EFCorePreviewDB;Trusted_Connection=True;MultipleActiveResultSets=true")
             ;
 
             return new ApplicationDbContext(optionsBuilder.Options);
@@ -31,6 +32,7 @@ namespace EFCore5Preview.Data
 
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Shop> Shop { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -45,7 +47,11 @@ namespace EFCore5Preview.Data
             //? Filter for all events in specific categories:
             //? optionsBuilder.LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Name }, LogLevel.Information);
             //? Use a custom filter over event and level:
-            optionsBuilder.LogTo(Console.WriteLine, (id, level) => id == RelationalEventId.CommandExecuting);
+            optionsBuilder
+                .LogTo(Console.WriteLine, (id, level) => id == RelationalEventId.CommandExecuting)
+                .EnableDetailedErrors(detailedErrorsEnabled: true)
+                .EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: true) //? Often also useful with EnableDetailedErrors 
+            ;
             #endregion
         }
 
@@ -61,6 +67,10 @@ namespace EFCore5Preview.Data
             //else Console.WriteLine("Database != IsRelational");
 
             modelBuilder.Entity<Address>().HasNoKey();
+
+
+            //? New ModelBuilder API for navigation properties
+            //# modelBuilder.Entity<Shop>().Navigation(_ => _.Customers).HasField("_mainTitle");
         }
     }
 
@@ -74,8 +84,41 @@ namespace EFCore5Preview.Data
     }
     public class Customer
     {
+        //? Use a C# attribute to specify a property backing field
+        private string _mainTitle;
+
+        [BackingField(nameof(_mainTitle))]
+        public string Title
+        {
+            get => _mainTitle;
+            set => _mainTitle = value;
+        }
+
+
         public int CustomerId { get; set; }
         public string FullName { get; set; }
         public byte[] Picture { get; set; }
+        public DateTimeOffset OrderDate { get; set; }
+
+
+        public int ShopId { get; set; }
+        public virtual Shop Shop { get; set; }
+    }
+
+    public class Shop
+    {
+        //? Use a C# attribute to specify a property backing field
+        private string _mainTitle;
+
+        [BackingField(nameof(_mainTitle))]
+        public string Title
+        {
+            get => _mainTitle;
+            set => _mainTitle = value;
+        }
+
+        public int ShopId { get; set; }
+
+        public virtual ICollection<Customer> Customers { get; set; }
     }
 }
