@@ -1,0 +1,6 @@
+﻿https://dejanstojanovic.net/aspnet/2019/april/localization-of-the-dtos-in-a-separate-assembly-in-aspnet-core/
+
+https://www.soluling.com/Help/ASP.NETCore/Index.htm
+
+https://www.soluling.com/Help/AspNetCoreFrame.htm
+

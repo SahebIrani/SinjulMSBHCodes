@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
-using SinjulMSBH.Localization.SinjulMSBH.Resources;
+using SinjulMSBH.Localization.Resources;
+using SinjulMSBH.Localization.ViewModels;
 
 namespace SinjulMSBH.Localization.Controllers
 {
@@ -14,5 +15,13 @@ namespace SinjulMSBH.Localization.Controllers
         public IStringLocalizer<Resource> Localizer { get; }
 
         public string Get() => Localizer["About"];
+
+
+        [HttpPost(nameof(LocalizaionPost))]
+        public string LocalizaionPost([FromBody] ViewModel model)
+        {
+            return default;
+        }
+
     }
 }

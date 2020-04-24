@@ -1,11 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+
+using SinjulMSBH.Localization.Resources;
 
 namespace SinjulMSBH.Localization.SinjulMSBH.Extensions
 {
@@ -14,20 +19,38 @@ namespace SinjulMSBH.Localization.SinjulMSBH.Extensions
         public static IServiceCollection AddSinjulMSBHLocalization(this IServiceCollection services)
         {
             services
-                .AddLocalization() // Default Path Resources .. !!!!   // SingleResxFile
-                //.AddLocalization(_ => _.ResourcesPath = "Resources") // SingleResxFile
+                .AddControllersWithViews()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization(_ =>
+                {
+                    _.DataAnnotationLocalizerProvider = (type, factory) =>
+                    {
+                        return factory.Create(typeof(Resource));
+
+                        //AssemblyName assemblyName = 
+                        //    new AssemblyName(typeof(Resource).GetTypeInfo().Assembly.FullName);
+
+                        //return factory.Create("Translations", assemblyName.Name);
+                    };
+                })
+            ;
+
+            services
                 //.AddLocalization(_ => _.ResourcesPath = "SinjulMSBH/Resources")
-                //.AddDataAnnotationsLocalization(options => {
-                //    options.DataAnnotationLocalizerProvider = (type, factory) =>
-                //        factory.Create(typeof(SharedResource));
-                //})
+                //.AddLocalization(_ => _.ResourcesPath = "Resources") // SingleResxFile
+                .AddLocalization() // Default Path Resources .. !!!!   // SingleResxFile
+                .Configure<MvcDataAnnotationsLocalizationOptions>(_ =>
+                {
+                    _.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(Resource));
+                })
                 .Configure<RequestLocalizationOptions>(
                     _ =>
                     {
                         List<CultureInfo> supportedCultures = new List<CultureInfo>
                         {
                             new CultureInfo("en-US"),
-                            new CultureInfo("fa-IR")
+                            new CultureInfo("fa-IR"),
                         };
 
                         _.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
