@@ -1,2 +1,3 @@
-﻿ Install-Package ZLogger
+﻿https://github.com/Cysharp/ZLogger#getting-started
 
+Install-Package ZLogger

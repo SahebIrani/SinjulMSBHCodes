@@ -8,4 +8,8 @@
     <PackageReference Include="ZLogger" Version="1.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+      <AdditionalFiles Include="BannedSymbols.txt" />
+  </ItemGroup>
+
 </Project>
