@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ZLogger" Version="1.2.0" />
+  </ItemGroup>
+
 </Project>
