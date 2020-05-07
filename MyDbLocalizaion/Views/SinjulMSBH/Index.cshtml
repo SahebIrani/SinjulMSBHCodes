@@ -1,0 +1,57 @@
+﻿
+
+@using MyDbLocalizaion
+@using System.Globalization
+@using DbLocalizationProvider
+@using DbLocalizationProvider.AspNetCore
+@using MyDbLocalizaion.Resources
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@model ModelForSinjulMSBH
+@inject IViewLocalizer Localizer
+@inject LocalizationProvider Provider
+@inject IHtmlLocalizer<ResourcesForSinjulMSBH> SinjulMSBHLocalizer
+
+<article class="text-center p-2 border rounded">
+    <section>
+        <p>@Html.Translate(() => ResourcesForSinjulMSBH.Jackslater)</p>
+        <p>@(Html.GetTranslations(() => ResourcesForSinjulMSBH.Jackslater))</p>
+        <p>@(Html.GetTranslations(() => ResourcesForSinjulMSBH.Jackslater,"sv","SinjulMSBH"))</p>
+        <p>@Localizer.GetString(() => ResourcesForSinjulMSBH.Jackslater)</p>
+        <p>@Localizer["MyDbLocalizaion.ResourcesForSinjulMSBH.Jackslater"]</p>
+    </section>
+    <section>
+        <p>@SinjulMSBHLocalizer.GetString(r => r.TitleHeader)  </p>
+        <p>@SinjulMSBHLocalizer.GetStringByCulture(r => r.TitleHeader, new CultureInfo("sv"))  </p>
+
+        Changing Culture:
+        <p>@(SinjulMSBHLocalizer.WithCulture(new CultureInfo("no")).GetString(() => ResourcesForSinjulMSBH.Jackslater))</p>
+        <p>@Localizer.GetStringByCulture(() => ResourcesForSinjulMSBH.Jackslater, new CultureInfo("no"))</p>
+    </section>
+    <section>
+        <p>HtmlHelper.LabelFor(Title) - @Html.LabelFor(m => m.Title) </p>
+        <p>HtmlHelper.TranslateFor(Title) - @Html.TranslateFor(m => m.Title) </p>
+        <p>HtmlHelper.TranslateFor(Title, WeirdCustomAttribute) - @Html.TranslateFor(m => m.Title, typeof(WeirdCustomAttribute)) </p>
+        <p>HtmlHelper.DescriptionFor(ModelForSinjulMSBH) - @Html.DescriptionFor(m => m.Title)</p>
+    </section>
+    <section>
+        <p>Requesting translation (Key: `ResourcesForSinjulMSBH.Jackslater`) in Swedish (should be in norsk) - @Localizer.GetStringByCulture(() => ResourcesForSinjulMSBH.Jackslater, new CultureInfo("sv")) </p>
+        <p>Requesting translation in non existing language (should be in invariant) - @Localizer.GetStringByCulture(() => ResourcesForSinjulMSBH.Jackslater, new CultureInfo("ee")) </p>
+        <p>Requesting translation in norsk (should be english - as english is closer to the end of the fallback languages) - @Localizer.GetStringByCulture(() => ResourcesForSinjulMSBH.Jackslater, new CultureInfo("no")) </p>
+        <p>Requesting translation in swedish (should be invariant- as there is no translation at all) - @Provider.GetStringByCulture(() => ResourcesForSinjulMSBH.Jackslater, new CultureInfo("sv"))</p>
+    </section>
+    <section>
+        <form asp-controller="SinjulMSBH" asp-action="Index" method="post">
+            <div>
+                <label asp-for="Title"></label>
+                <input asp-for="Title" />
+                <span asp-validation-for="Title"></span>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+</article>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
