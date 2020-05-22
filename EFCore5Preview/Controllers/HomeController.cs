@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
@@ -180,6 +181,32 @@ namespace EFCore5Preview.Controllers
         }
 
         #endregion
+
+
+        #region Preview4
+
+        [HttpGet(nameof(EFCore5Preview4))]
+        public async ValueTask<OkObjectResult> EFCore5Preview4(CancellationToken ct = default)
+        {
+            //? database precision/scale in model
+            var q1 = await ApplicationDbContext.Shop.AsNoTracking()
+                        .Where(_ => _.Numeric > 4 && _.Numeric < 17)
+                        .ToListAsync(ct)
+            ;
+
+
+            //? Specify SQL Server index fill factor
+            var q2 = await ApplicationDbContext.Customers.AsNoTracking()
+                        .Where(_ => _.FullName.Contains("SinjulMSBH"))
+                        .ToListAsync(ct)
+            ;
+
+
+            return Ok(new { q1, q2 });
+        }
+
+        #endregion
+
 
 
         public IActionResult Index() => View();

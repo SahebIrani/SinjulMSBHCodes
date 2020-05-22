@@ -71,6 +71,28 @@ namespace EFCore5Preview.Data
 
             //? New ModelBuilder API for navigation properties
             // modelBuilder.Entity<Shop>().Navigation(_ => _.Customers).HasField("_mainTitle");
+
+            //? Configure database precision / scale in model
+            modelBuilder
+                .Entity<Shop>()
+                .Property(b => b.Numeric)
+                //! Precision and scale can still be set via the full database type, 
+                //! such as “decimal(17,4)”.
+                .HasPrecision(17, 4)
+            ;
+
+            //? Specify SQL Server index fill factor
+            modelBuilder.Entity<Customer>(entity =>
+            {
+                entity.HasKey(e => e.CustomerId);
+                entity
+                    .HasIndex(e => e.FullName)
+                    .HasName("IX_FullName")
+                    .HasFillFactor(90)
+                ;
+            });
+
+
         }
     }
 
@@ -121,5 +143,6 @@ namespace EFCore5Preview.Data
         }
 
         public virtual ICollection<Customer> Customers { get; set; }
+        public decimal Numeric { get; set; }
     }
 }

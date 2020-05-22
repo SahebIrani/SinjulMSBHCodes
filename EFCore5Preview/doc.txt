@@ -64,3 +64,16 @@ dotnet ef database update --connection "connection string"
 dotnet ef database update --connection "Server=SINJULMSBH\MSSQLSERVERS2019;Database=EFCorePreviewDB;Trusted_Connection=True;MultipleActiveResultSets=true"
 
 
+
+
+
+
+
+https://devblogs.microsoft.com/dotnet/announcing-entity-framework-core-5-0-preview-4/
+To install the preview tool globally, first uninstall any existing version with:
+dotnet tool uninstall --global dotnet-ef
+Then install with:
+dotnet tool install --global dotnet-ef --version 5.0.0-preview.4.20220.10
+
+https://docs.microsoft.com/ef/core/what-is-new/ef-core-5.0/whatsnew
+
