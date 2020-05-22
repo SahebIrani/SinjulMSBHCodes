@@ -1,0 +1,5 @@
+﻿https://devblogs.microsoft.com/dotnet/introducing-yarp-preview-1/?fbclid=IwAR0aP3ke9hpsooGGw0vCQ-ii-1n7VB00MytEtcWSk-l6c2zt7V1y1J4H3v0
+https://microsoft.github.io/reverse-proxy/articles/getting_started.html
+https://microsoft.github.io/reverse-proxy/
+https://github.com/microsoft/reverse-proxy
+https://github.com/SahebIrani/SinjulMSBHCodes/tree/MyProxy/MyProxy
