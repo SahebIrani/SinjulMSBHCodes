@@ -24,14 +24,14 @@ namespace EFCore5Preview.Data
         }
     }
 
-    public class MyDbContextFactory : IDesignTimeDbContextFactory<SomeDbContext>
-    {
-        //? Flow arguments into IDesignTimeDbContextFactory
-        //! dotnet ef migrations add two --verbose --dev
+    //public class MyDbContextFactory : IDesignTimeDbContextFactory<SomeDbContext>
+    //{
+    //    //? Flow arguments into IDesignTimeDbContextFactory
+    //    //! dotnet ef migrations add two --verbose --dev
 
-        public SomeDbContext CreateDbContext(string[] args)
-            => new SomeDbContext(args.Contains("--dev"));
-    }
+    //    public SomeDbContext CreateDbContext(string[] args)
+    //        => new SomeDbContext(args.Contains("--dev"));
+    //}
     public class SomeDbContext : DbContext
     {
         private readonly bool v;
@@ -112,18 +112,18 @@ namespace EFCore5Preview.Data
             //? What's new in EF Core 5 Preview 5
             //! Database collations
 
-            modelBuilder.UseCollation("Persian_PhoneBook");
+            //modelBuilder.UseCollation("Persian_PhoneBook");
 
-            modelBuilder
-            .Entity<Customer>()
-            .Property(e => e.FullName)
-            .UseCollation("Persian_PhoneBook");
+            //modelBuilder
+            //.Entity<Customer>()
+            //.Property(e => e.FullName)
+            //.UseCollation("Persian_PhoneBook");
 
             //? Stored(persisted) computed columns
-            modelBuilder
-                .Entity<Customer>()
-                .Property(e => e.SomethingComputed)
-                .HasComputedColumnSql("my sql", stored: true);
+            //modelBuilder
+            //    .Entity<Customer>()
+            //    .Property(e => e.SomethingComputed)
+            //    .HasComputedColumnSql("my sql", stored: true);
 
             //? SQLite computed columns
             //! EF Core now supports computed columns in SQLite databases.
@@ -160,7 +160,7 @@ namespace EFCore5Preview.Data
 
         public int ShopId { get; set; }
         public virtual Shop Shop { get; set; }
-        public string SomethingComputed { get; set; }
+        //public string SomethingComputed { get; set; }
     }
 
     public class Shop

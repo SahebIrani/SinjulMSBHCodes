@@ -12,6 +12,7 @@ using EFCore5Preview.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Text.Json.Serialization;
 
 namespace EFCore5Preview
 {
@@ -32,7 +33,16 @@ namespace EFCore5Preview
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                
+                .AddJsonOptions(_ => {
+
+                    _.JsonSerializerOptions.ReferenceHandling =
+                        ReferenceHandling.Preserve;
+                    
+                })
+                
+            ;
             services.AddRazorPages();
         }
 

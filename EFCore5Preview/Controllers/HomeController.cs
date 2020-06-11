@@ -216,11 +216,11 @@ namespace EFCore5Preview.Controllers
         {
             //? What's new in EF Core 5 Preview 5
             //! Database collations
-            Customer customer = await
-                ApplicationDbContext.Customers
-                    .SingleAsync(e => EF.Functions.Collate
-                                    (e.FullName, "Persian_PhoneBook") == "SinjulMSBH", ct)
-            ;
+            //Customer customer = await
+            //    ApplicationDbContext.Customers
+            //        .SingleAsync(e => EF.Functions.Collate
+            //                        (e.FullName, "Persian_PhoneBook") == "SinjulMSBH", ct)
+            //;
 
             //? No-tracking queries with identity resolution
             IReadOnlyCollection<Customer> customersWithShop =
@@ -238,7 +238,7 @@ namespace EFCore5Preview.Controllers
             ;
 
 
-            return Ok(new { customer, customersWithShopNew });
+            return Ok(new { customersWithShop, customersWithShopNew });
         }
 
 
