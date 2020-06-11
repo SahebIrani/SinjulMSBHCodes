@@ -208,6 +208,42 @@ namespace EFCore5Preview.Controllers
         #endregion
 
 
+        #region  Preview 5
+
+
+        [HttpGet(nameof(EFCore5Preview5))]
+        public async ValueTask<OkObjectResult> EFCore5Preview5(CancellationToken ct = default)
+        {
+            //? What's new in EF Core 5 Preview 5
+            //! Database collations
+            Customer customer = await
+                ApplicationDbContext.Customers
+                    .SingleAsync(e => EF.Functions.Collate
+                                    (e.FullName, "Persian_PhoneBook") == "SinjulMSBH", ct)
+            ;
+
+            //? No-tracking queries with identity resolution
+            IReadOnlyCollection<Customer> customersWithShop =
+                await ApplicationDbContext.Customers
+                    .AsNoTracking()
+                    .Include(e => e.Shop)
+                    .ToListAsync(ct)
+            ;
+            IReadOnlyCollection<Customer> customersWithShopNew =
+                await ApplicationDbContext.Customers
+                    .AsNoTracking()
+                    .PerformIdentityResolution()
+                    .Include(e => e.Shop)
+                    .ToListAsync(ct)
+            ;
+
+
+            return Ok(new { customer, customersWithShopNew });
+        }
+
+
+        #endregion
+
 
         public IActionResult Index() => View();
 

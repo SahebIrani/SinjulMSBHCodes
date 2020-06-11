@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,21 @@ namespace EFCore5Preview.Data
 
             return new ApplicationDbContext(optionsBuilder.Options);
         }
+    }
+
+    public class MyDbContextFactory : IDesignTimeDbContextFactory<SomeDbContext>
+    {
+        //? Flow arguments into IDesignTimeDbContextFactory
+        //! dotnet ef migrations add two --verbose --dev
+
+        public SomeDbContext CreateDbContext(string[] args)
+            => new SomeDbContext(args.Contains("--dev"));
+    }
+    public class SomeDbContext : DbContext
+    {
+        private readonly bool v;
+
+        public SomeDbContext(bool v) => this.v = v;
     }
 
     public class ApplicationDbContext : IdentityDbContext
@@ -93,8 +109,27 @@ namespace EFCore5Preview.Data
             });
 
 
+            //? What's new in EF Core 5 Preview 5
+            //! Database collations
+
+            modelBuilder.UseCollation("Persian_PhoneBook");
+
+            modelBuilder
+            .Entity<Customer>()
+            .Property(e => e.FullName)
+            .UseCollation("Persian_PhoneBook");
+
+            //? Stored(persisted) computed columns
+            modelBuilder
+                .Entity<Customer>()
+                .Property(e => e.SomethingComputed)
+                .HasComputedColumnSql("my sql", stored: true);
+
+            //? SQLite computed columns
+            //! EF Core now supports computed columns in SQLite databases.
         }
     }
+
 
     [Keyless]
     public class Address
@@ -125,6 +160,7 @@ namespace EFCore5Preview.Data
 
         public int ShopId { get; set; }
         public virtual Shop Shop { get; set; }
+        public string SomethingComputed { get; set; }
     }
 
     public class Shop
