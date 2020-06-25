@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.Net;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -32,12 +33,12 @@ namespace EFCore5Preview.Data
     //    public SomeDbContext CreateDbContext(string[] args)
     //        => new SomeDbContext(args.Contains("--dev"));
     //}
-    public class SomeDbContext : DbContext
-    {
-        private readonly bool v;
+    //public class SomeDbContext : DbContext
+    //{
+    //    private readonly bool v;
 
-        public SomeDbContext(bool v) => this.v = v;
-    }
+    //    public SomeDbContext(bool v) => this.v = v;
+    //}
 
     public class ApplicationDbContext : IdentityDbContext
     {
@@ -46,9 +47,15 @@ namespace EFCore5Preview.Data
         {
         }
 
+
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Shop> Shop { get; set; }
+        public DbSet<Artist> Artists { get; set; }
+        public DbSet<Album> Albums { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Host> Hosts { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -180,5 +187,61 @@ namespace EFCore5Preview.Data
 
         public virtual ICollection<Customer> Customers { get; set; }
         public decimal Numeric { get; set; }
+    }
+
+
+
+
+    //? IndexAttribute
+    [Index(nameof(FullName), IsUnique = true)]        
+    //? Multiple Index
+    [Index(nameof(FirstName), nameof(LastName), IsUnique = true)]
+    public class Artist
+    {
+        public int ArtistId { get; set; }
+
+
+        [MaxLength(128)]
+        public string FullName { get; set; }
+
+
+        [MaxLength(64)]
+        public string FirstName { get; set; }
+
+        [MaxLength(64)]
+        public string LastName { get; set; }
+
+
+        public bool IsSigned { get; set; }
+
+
+        public virtual ICollection<Album> Albums { get; set; }
+    }
+
+
+    public class Album
+    {
+        public int AlbumId { get; set; }
+
+        public int ArtistId { get; set; }
+        public virtual Artist Artist { get; set; }
+
+        public virtual ICollection<Tag> Tags { get; set; }
+    }
+
+    public class Tag
+    {
+        public int TagId { get; set; }
+
+
+        public int AlbumId { get; set; }
+        public virtual Album Album { get; set; }
+    }
+
+    //? IPAddress mapping
+    public class Host
+    {
+        public int Id { get; set; }
+        public IPAddress Address { get; set; }
     }
 }

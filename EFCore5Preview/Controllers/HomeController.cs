@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -14,6 +15,7 @@ using EFCore5Preview.Models;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
 
@@ -171,7 +173,9 @@ namespace EFCore5Preview.Controllers
 
             JsonSerializerOptions options = new JsonSerializerOptions
             {
-                ReferenceHandling = ReferenceHandling.Preserve
+                //ReferenceHandling = ReferenceHandling.Preserve
+
+                ReferenceHandler = ReferenceHandler.Preserve //? after preview 6
             };
 
             string res1 = JsonSerializer.Serialize(shop, options);
@@ -208,7 +212,7 @@ namespace EFCore5Preview.Controllers
         #endregion
 
 
-        #region  Preview 5
+        #region  Preview5
 
 
         [HttpGet(nameof(EFCore5Preview5))]
@@ -241,6 +245,84 @@ namespace EFCore5Preview.Controllers
             return Ok(new { customersWithShop, customersWithShopNew });
         }
 
+
+        #endregion
+
+        #region  Preview6
+
+        [HttpGet(nameof(EFCore5Preview6))]
+        public async ValueTask<OkObjectResult> EFCore5Preview6(CancellationToken ct = default)
+        {
+            //? Split queries with Include
+
+            IReadOnlyCollection<Artist> artists = await ApplicationDbContext.Artists
+                .AsSplitQuery()
+                .Include(e => e.Albums).ThenInclude(e => e.Tags)
+                .OrderBy(c => c.ArtistId)
+                .Skip(0)
+                .Take(4)
+                .ToListAsync(ct)
+            ;
+
+            //? Split queries with collection projections
+
+            var artists2 = await ApplicationDbContext.Artists
+                .AsSplitQuery()
+                .Select(e => new
+                {
+                    Artist = e,
+                    Albums = e.Albums,
+                })
+                .ToListAsync(ct)
+            ;
+
+            //? Improved query translation exceptions
+            IReadOnlyCollection<Artist> artists3 = await ApplicationDbContext.Artists
+                .Where(e => e.IsSigned)
+                //.Where(e => e.FirstName.Equals("Jack Slater", StringComparison.CurrentCulture))
+                .ToListAsync(ct)
+            ;
+
+            //? Specify transaction ID
+            //using (IDbContextTransaction transaction =
+            //    await ApplicationDbContext.Database.BeginTransactionAsync(ct))
+            //{
+            //    using (await ApplicationDbContext.Database
+            //        .UseTransactionAsync(transaction.GetDbTransaction(), transaction.TransactionId, ct))
+            //    {
+            //    }
+            //}
+
+            //? IPAddress mapping
+            await ApplicationDbContext.AddRangeAsync(
+                new Host { Address = IPAddress.Parse("127.0.0.1") },
+                new Host { Address = IPAddress.Parse("0000:0000:0000:0000:0000:0000:0000:0001") }
+            );
+            //await ApplicationDbContext.SaveChanges(ct);
+            IReadOnlyCollection<Host> hosts = await ApplicationDbContext.Hosts.ToListAsync(ct);
+
+            //? Exclude OnConfiguring when scaffolding
+            //! dotnet ef dbcontext scaffold "Data Source=(localdb)\MSSQLLocalDB;
+            //! Initial Catalog=Chinook" Microsoft.EntityFrameworkCore.SqlServer 
+            //? --no - onconfiguring
+
+            //? Or in the Package Manager Console:
+            //! Scaffold - DbContext 'Data Source=(localdb)\MSSQLLocalDB;
+            //! Initial Catalog=Chinook' Microsoft.EntityFrameworkCore.SqlServer 
+            //? - NoOnConfiguring
+
+            //? Translations for FirstOrDefault on strings
+            //? Simplify case blocks
+            IReadOnlyCollection<Customer> customers =
+                await ApplicationDbContext.Customers
+                .Where(c => c.FullName.FirstOrDefault() == 'J')
+                .OrderBy(w => w.FullName.CompareTo("Jack Slater") == 0)
+                .ThenBy(w => w.CustomerId)
+                .ToListAsync(ct)
+            ;
+
+            return Ok(new { artists, artists2, artists3,/* hosts,*/ customers });
+        }
 
         #endregion
 

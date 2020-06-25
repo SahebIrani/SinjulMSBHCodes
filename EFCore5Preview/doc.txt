@@ -84,3 +84,29 @@ https://docs.microsoft.com/ef/core/what-is-new/ef-core-5.0/whatsnew
 
 https://devblogs.microsoft.com/dotnet/announcing-entity-framework-core-5-0-preview-5/
 https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-5.0/whatsnew
+
+
+
+
+
+
+
+
+
+
+https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-5.0/whatsnew
+https://www.nuget.org/packages/Microsoft.Data.Sqlite.Core/5.0.0-preview.6.20312.4
+https://devblogs.microsoft.com/dotnet/announcing-entity-framework-core-efcore-5-0-preview-6/
+
+https://devblogs.microsoft.com/dotnet/announcing-net-5-0-preview-6/
+https://devblogs.microsoft.com/aspnet/asp-net-core-updates-in-net-5-preview-6/
+
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 5.0.0-preview.6.20312.4
+dotnet tool uninstall --global dotnet-ef
+dotnet tool install --global dotnet-ef --version 5.0.0-preview.6.20312.4
+
+
+Exclude OnConfiguring when scaffolding
+dotnet ef dbcontext scaffold "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Chinook" Microsoft.EntityFrameworkCore.SqlServer --no-onconfiguring
+
+

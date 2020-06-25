@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFCore5Preview.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200424075214_UpdatedToPreview3")]
-    partial class UpdatedToPreview3
+    [Migration("20200625213527_EFCore5Preview6")]
+    partial class EFCore5Preview6
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.0-preview.3.20181.2")
+                .HasAnnotation("ProductVersion", "5.0.0-preview.6.20312.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -38,6 +38,58 @@ namespace EFCore5Preview.Migrations
                     b.ToTable("Addresses");
                 });
 
+            modelBuilder.Entity("EFCore5Preview.Data.Album", b =>
+                {
+                    b.Property<int>("AlbumId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ArtistId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AlbumId");
+
+                    b.HasIndex("ArtistId");
+
+                    b.ToTable("Albums");
+                });
+
+            modelBuilder.Entity("EFCore5Preview.Data.Artist", b =>
+                {
+                    b.Property<int>("ArtistId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(64)")
+                        .HasMaxLength(64);
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
+
+                    b.Property<bool>("IsSigned")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(64)")
+                        .HasMaxLength(64);
+
+                    b.HasKey("ArtistId");
+
+                    b.HasIndex("FullName")
+                        .IsUnique()
+                        .HasFilter("[FullName] IS NOT NULL");
+
+                    b.HasIndex("FirstName", "LastName")
+                        .IsUnique()
+                        .HasFilter("[FirstName] IS NOT NULL AND [LastName] IS NOT NULL");
+
+                    b.ToTable("Artists");
+                });
+
             modelBuilder.Entity("EFCore5Preview.Data.Customer", b =>
                 {
                     b.Property<int>("CustomerId")
@@ -46,7 +98,7 @@ namespace EFCore5Preview.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTimeOffset>("OrderDate")
                         .HasColumnType("datetimeoffset");
@@ -62,9 +114,28 @@ namespace EFCore5Preview.Migrations
 
                     b.HasKey("CustomerId");
 
+                    b.HasIndex("FullName")
+                        .HasName("IX_FullName")
+                        .HasAnnotation("SqlServer:FillFactor", 90);
+
                     b.HasIndex("ShopId");
 
                     b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("EFCore5Preview.Data.Host", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Hosts");
                 });
 
             modelBuilder.Entity("EFCore5Preview.Data.Shop", b =>
@@ -74,12 +145,33 @@ namespace EFCore5Preview.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<decimal>("Numeric")
+                        .HasColumnType("decimal(17,4)")
+                        .HasPrecision(17, 4);
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ShopId");
 
                     b.ToTable("Shop");
+                });
+
+            modelBuilder.Entity("EFCore5Preview.Data.Tag", b =>
+                {
+                    b.Property<int>("TagId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AlbumId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TagId");
+
+                    b.HasIndex("AlbumId");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -102,8 +194,8 @@ namespace EFCore5Preview.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
-                        .IsUnique()
                         .HasName("RoleNameIndex")
+                        .IsUnique()
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
@@ -191,8 +283,8 @@ namespace EFCore5Preview.Migrations
                         .HasName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
-                        .IsUnique()
                         .HasName("UserNameIndex")
+                        .IsUnique()
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
@@ -278,11 +370,29 @@ namespace EFCore5Preview.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("EFCore5Preview.Data.Album", b =>
+                {
+                    b.HasOne("EFCore5Preview.Data.Artist", "Artist")
+                        .WithMany("Albums")
+                        .HasForeignKey("ArtistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("EFCore5Preview.Data.Customer", b =>
                 {
                     b.HasOne("EFCore5Preview.Data.Shop", "Shop")
                         .WithMany("Customers")
                         .HasForeignKey("ShopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EFCore5Preview.Data.Tag", b =>
+                {
+                    b.HasOne("EFCore5Preview.Data.Album", "Album")
+                        .WithMany("Tags")
+                        .HasForeignKey("AlbumId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

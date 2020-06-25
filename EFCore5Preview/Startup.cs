@@ -1,18 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+
 using EFCore5Preview.Data;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Text.Json.Serialization;
 
 namespace EFCore5Preview
 {
@@ -37,9 +33,15 @@ namespace EFCore5Preview
                 
                 .AddJsonOptions(_ => {
 
-                    _.JsonSerializerOptions.ReferenceHandling =
-                        ReferenceHandling.Preserve;
-                    
+                    //_.JsonSerializerOptions.ReferenceHandling =
+                    //    ReferenceHandling.Preserve;
+
+
+                    //? after preview 6
+                    _.JsonSerializerOptions.ReferenceHandler =
+                        ReferenceHandler.Preserve
+                    ;
+
                 })
                 
             ;
