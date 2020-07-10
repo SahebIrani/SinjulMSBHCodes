@@ -327,7 +327,20 @@ namespace EFCore5Preview.Controllers
         #endregion
 
 
-        public IActionResult Index() => View();
+        public string Index()
+        {
+            string traceId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+
+
+            var traceId1 = Activity.Current;
+            var traceId2 = Activity.DefaultIdFormat;
+            var traceId3 = Activity.ForceDefaultIdFormat;
+
+
+            return traceId;
+        }
+
+
 
         public IActionResult Privacy() => View();
 
