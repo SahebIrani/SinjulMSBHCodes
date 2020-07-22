@@ -43,8 +43,6 @@ namespace EFCore5Preview.Data
 
     public class SomeDbContext : DbContext
     {
-        private IWebProxy myProxyInstance;
-
         public SomeDbContext(DbContextOptions<SomeDbContext> options)
             : base(options)
         {

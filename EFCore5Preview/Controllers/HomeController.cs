@@ -346,7 +346,7 @@ namespace EFCore5Preview.Controllers
             //? New pattern for store-generated defaults
             //! and .HasDefaultValue(true);
 
-            //? Savepoints
+            //? Save Points
             //? EF Core now supports savepoints for greater control over transactions that execute multiple operations.
             //? Savepoints can be manually created, released, and rolled back. For example:
             await context.Database.CreateSavepointAsync(name: "SinjulMSBHSavePoint", cancellationToken: ct);
