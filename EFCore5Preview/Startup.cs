@@ -1,3 +1,4 @@
+
 using System.Text.Json.Serialization;
 
 using EFCore5Preview.Data;
@@ -29,9 +30,16 @@ namespace EFCore5Preview
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //? DbContextFactory
+            //?  AddDbContextFactory and AddPooledDbContextFactory
+            services.AddDbContextFactory<SomeDbContext>(_ =>
+                _.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=SomeDbContext"));
+
             services.AddControllersWithViews()
-                
-                .AddJsonOptions(_ => {
+
+                .AddJsonOptions(_ =>
+                {
 
                     //_.JsonSerializerOptions.ReferenceHandling =
                     //    ReferenceHandling.Preserve;
@@ -43,7 +51,7 @@ namespace EFCore5Preview
                     ;
 
                 })
-                
+
             ;
             services.AddRazorPages();
         }

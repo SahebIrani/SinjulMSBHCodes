@@ -15,6 +15,7 @@ using EFCore5Preview.Models;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
@@ -236,7 +237,7 @@ namespace EFCore5Preview.Controllers
             IReadOnlyCollection<Customer> customersWithShopNew =
                 await ApplicationDbContext.Customers
                     .AsNoTracking()
-                    .PerformIdentityResolution()
+                    //.PerformIdentityResolution()
                     .Include(e => e.Shop)
                     .ToListAsync(ct)
             ;
@@ -247,6 +248,7 @@ namespace EFCore5Preview.Controllers
 
 
         #endregion
+
 
         #region  Preview6
 
@@ -325,6 +327,44 @@ namespace EFCore5Preview.Controllers
         }
 
         #endregion
+
+
+        #region  Preview7
+
+        [HttpGet(nameof(EFCore5Preview7))]
+        public async ValueTask<OkObjectResult> EFCore5Preview7(
+            [FromServices] IDbContextFactory<SomeDbContext> dbContextFactory,
+            CancellationToken ct = default)
+        {
+            //? DbContextFactory
+            using SomeDbContext context = dbContextFactory.CreateDbContext();
+
+            //? Reset DbContext state
+            context.ChangeTracker.Clear();
+            await context.GetDependencies().StateManager.ResetStateAsync();
+
+            //? New pattern for store-generated defaults
+            //! and .HasDefaultValue(true);
+
+            //? Savepoints
+            //? EF Core now supports savepoints for greater control over transactions that execute multiple operations.
+            //? Savepoints can be manually created, released, and rolled back. For example:
+            await context.Database.CreateSavepointAsync(name: "SinjulMSBHSavePoint", cancellationToken: ct);
+            //? In addition, EF Core will now roll back to the last savepoint when executing SaveChanges fails.
+            //? This allows SaveChanges to be re-tried without re-trying the entire transaction.
+            // https://docs.microsoft.com/en-us/ef/core/saving/transactions
+            // https://en.wikipedia.org/wiki/Savepoint
+
+            return default;
+        }
+
+        #endregion
+
+
+
+
+
+
 
 
         public string Index()

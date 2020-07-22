@@ -110,3 +110,27 @@ Exclude OnConfiguring when scaffolding
 dotnet ef dbcontext scaffold "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Chinook" Microsoft.EntityFrameworkCore.SqlServer --no-onconfiguring
 
 
+
+
+
+
+
+
+
+
+https://devblogs.microsoft.com/dotnet/announcing-entity-framework-core-ef-core-5-0-preview-7/
+https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-5.0/whatsnew
+https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/5.0.0-preview.7.20365.15
+https://github.com/dotnet/EntityFramework.Docs/issues/2524
+https://stackoverflow.com/questions/55454624/how-to-delete-whole-database-and-reset-the-change-tracker-with-ef-core-using-sql
+https://github.com/dotnet/efcore/issues/15182
+https://en.wikipedia.org/wiki/Savepoint
+https://docs.microsoft.com/en-us/ef/core/saving/transactions
+
+
+
+dotnet tool uninstall --global dotnet-ef
+dotnet tool install --global dotnet-ef --version 5.0.0-preview.7.20365.15
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 5.0.0-preview.7.20365.15
+https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/5.0.0-preview.7.20365.15
+

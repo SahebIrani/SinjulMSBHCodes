@@ -40,6 +40,53 @@ namespace EFCore5Preview.Data
     //    public SomeDbContext(bool v) => this.v = v;
     //}
 
+
+    public class SomeDbContext : DbContext
+    {
+        private IWebProxy myProxyInstance;
+
+        public SomeDbContext(DbContextOptions<SomeDbContext> options)
+            : base(options)
+        {
+        }
+
+        public DbSet<Blog> Blogs { get; set; }
+
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // => optionsBuilder
+        //     .UseCosmos("my-cosmos-connection-string", "MyDb",
+        //        cosmosOptionsBuilder =>
+        //        {
+        //            cosmosOptionsBuilder.WebProxy(myProxyInstance);
+
+        //            cosmosOptionsBuilder.LimitToEndpoint();
+        //            cosmosOptionsBuilder.RequestTimeout(requestTimeout);
+        //            cosmosOptionsBuilder.OpenTcpConnectionTimeout(timeout);
+        //            cosmosOptionsBuilder.IdleTcpConnectionTimeout(timeout);
+        //            cosmosOptionsBuilder.GatewayModeMaxConnectionLimit(connectionLimit);
+        //            cosmosOptionsBuilder.MaxTcpConnectionsPerEndpoint(connectionLimit);
+        //            cosmosOptionsBuilder.MaxRequestsPerTcpConnection(requestLimit);
+        //        });
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            //? Cosmos partition keys
+            modelBuilder.Entity<Blog>().HasPartitionKey(b => b.AlternateKey);
+
+
+            //? Scaffold-DbContext now singularizes
+            //? Previously when scaffolding a DbContext 
+            //! For example, tables People and Addresses resulted in entity types named People and Addresses.
+            //? In previous releases, Now in EF Core 5.0, the Humanizer package is used as a default pluralization service. 
+            //? This means tables People and Addresses will now be reverse engineered to entity types named Person and Address.
+        }
+    }
+
+
     public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -138,6 +185,32 @@ namespace EFCore5Preview.Data
     }
 
 
+
+
+    //? EF Core Preview 7
+    //! New pattern for store-generated defaults
+    //? and .HasDefaultValue(true);
+    public class Blog
+    {
+        private bool? _isValid;
+
+        public bool IsValid
+        {
+            get => _isValid ?? false;
+            set => _isValid = value;
+        }
+        public string AlternateKey { get; set; }
+    }
+
+
+
+
+
+
+
+
+
+
     [Keyless]
     public class Address
     {
@@ -193,7 +266,7 @@ namespace EFCore5Preview.Data
 
 
     //? IndexAttribute
-    [Index(nameof(FullName), IsUnique = true)]        
+    [Index(nameof(FullName), IsUnique = true)]
     //? Multiple Index
     [Index(nameof(FirstName), nameof(LastName), IsUnique = true)]
     public class Artist
