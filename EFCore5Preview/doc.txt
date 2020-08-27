@@ -134,3 +134,31 @@ dotnet tool install --global dotnet-ef --version 5.0.0-preview.7.20365.15
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 5.0.0-preview.7.20365.15
 https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/5.0.0-preview.7.20365.15
 
+
+
+
+
+
+
+
+
+
+
+
+
+https://devblogs.microsoft.com/dotnet/announcing-entity-framework-core-ef-core-5-0-preview-8/
+https://devblogs.microsoft.com/aspnet/asp-net-core-updates-in-net-5-preview-8/#json-console-logger
+https://devblogs.microsoft.com/dotnet/announcing-net-5-0-preview-8/
+
+https://docs.microsoft.com/ef/core/what-is-new/ef-core-5.0/whatsnew
+
+dotnet tool install --global dotnet-ef --version 5.0.0-preview.8.20407.4
+dotnet tool update --global dotnet-ef --version 5.0.0-preview.8.20407.4
+
+
+
+
+https://hub.docker.com/_/microsoft-dotnet-sdk/
+https://hub.docker.com/_/microsoft-dotnet-aspnet/
+https://hub.docker.com/_/microsoft-dotnet-runtime/
+https://hub.docker.com/_/microsoft-dotnet-runtime-deps/

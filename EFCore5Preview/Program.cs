@@ -1,20 +1,33 @@
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace EFCore5Preview
 {
+    public class SinjulMSBHBase
+    {
+        public int Id { get; set; }
+    }
+
+    public class SinjulMSBH : SinjulMSBHBase
+    {
+    }
+
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            await CreateHostBuilder(args).Build().RunAsync();
+
+            {
+                int max = Math.Max(4, 8);
+
+                _ = typeof(Program).Name;
+                _ = nameof(Program);
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

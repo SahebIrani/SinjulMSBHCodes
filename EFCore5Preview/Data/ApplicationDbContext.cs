@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -121,6 +122,14 @@ namespace EFCore5Preview.Data
                 .EnableSensitiveDataLogging(sensitiveDataLoggingEnabled: true) //? Often also useful with EnableDetailedErrors 
             ;
             #endregion
+
+
+            //? Preview 8
+            optionsBuilder
+                .UseSqlServer(
+                    "Your.SqlServerConnectionString",
+                    b => b.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
+            );
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -179,6 +188,15 @@ namespace EFCore5Preview.Data
 
             //? SQLite computed columns
             //! EF Core now supports computed columns in SQLite databases.
+
+
+            //? Preview 8
+            modelBuilder.Entity<Animal>().ToTable("Animals");
+            modelBuilder.Entity<Pet>().ToTable("Pets");
+            modelBuilder.Entity<Cat>().ToTable("Cats");
+            modelBuilder.Entity<Dog>().ToTable("Dogs");
+
+
         }
     }
 
@@ -315,4 +333,57 @@ namespace EFCore5Preview.Data
         public int Id { get; set; }
         public IPAddress Address { get; set; }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //? Preview 8
+    //Table-per-type(TPT) mapping
+    [Table("Animals")]
+    public class Animal
+    {
+        public int Id { get; set; }
+        public string Species { get; set; }
+    }
+
+    [Table("Pets")]
+    public class Pet : Animal
+    {
+        public string Name { get; set; }
+    }
+
+    [Table("Cats")]
+    public class Cat : Pet
+    {
+        public string EdcuationLevel { get; set; }
+    }
+
+    [Table("Dogs")]
+    public class Dog : Pet
+    {
+        public string FavoriteToy { get; set; }
+    }
+
+
+
+
+
 }
